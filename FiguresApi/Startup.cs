@@ -2,6 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using FiguresApi.Converters;
+using FiguresApi.Db;
+using FiguresApi.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -25,15 +29,24 @@ namespace FiguresApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAutoMapper(typeof(FigureProfile));
+
             services.AddControllers();
+
+            services.AddDbContext<FiguresDbContext>();
+
+            services.AddSingleton<FigureFactory>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, FiguresDbContext dbContext)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+                //dbContext.Database.EnsureDeleted();
+                dbContext.Database.EnsureCreated();
             }
 
             app.UseHttpsRedirection();

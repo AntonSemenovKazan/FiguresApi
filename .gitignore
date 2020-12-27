@@ -1,3 +1,6 @@
 /FiguresApi/bin/
 /FiguresApi/obj/
 /FiguresApi/.vs/FiguresApi/v16/.suo
+/FiguresApi/figures.db
+/FiguresApi/figures.db-shm
+/FiguresApi/figures.db-wal

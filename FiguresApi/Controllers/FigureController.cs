@@ -1,6 +1,12 @@
-﻿using System.Threading.Tasks;
-using FiguresApi.Contracts;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper;
+using FiguresApi.Db;
+using FiguresApi.Services;
+using FiguresApi.Validators;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Figure = FiguresApi.Contracts.Figure;
 
 namespace FiguresApi.Controllers
 {
@@ -8,21 +14,45 @@ namespace FiguresApi.Controllers
     [Route("api/[controller]")]
     public class FigureController : ControllerBase
     {
-        public FigureController()
+        private readonly IMapper mapper;
+
+        private readonly FiguresDbContext dbContext;
+        private readonly FigureFactory figureFactory;
+
+        public FigureController(IMapper mapper, FiguresDbContext dbContext, FigureFactory figureFactory)
         {
-            
+            this.mapper = mapper;
+            this.dbContext = dbContext;
+            this.figureFactory = figureFactory;
         }
 
         [HttpPost]
-        public async Task<ActionResult> PostFigure(Figure figure)
+        public async Task<ActionResult<int>> PostFigure(Figure figure)
         {
-            return CreatedAtAction(nameof(GetFigure), new {id = 1000}, figure);
+            if (!FigureValidator.IsValid(figure))
+                return BadRequest();
+
+            var dbFigure = mapper.Map<Db.Figure>(figure);
+
+            dbContext.Add(dbFigure);
+
+            await dbContext.SaveChangesAsync();
+
+            return dbFigure.FigureId;
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Figure>> GetFigure(long id)
+        public async Task<ActionResult<double>> GetFigure(int id)
         {
-            return new Figure();
+            var dbFigure = await dbContext.Figures.Include(f => f.Coordinates).SingleOrDefaultAsync(f => f.FigureId == id);
+
+            if (dbFigure == null)
+            {
+                return NotFound();
+            }
+
+            var figure = figureFactory.CreateFrom(dbFigure);
+            return figure.GetSquare();
         }
 
         //[HttpGet]
