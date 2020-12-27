@@ -55,11 +55,5 @@ namespace FiguresApi.Controllers
             var figure = figureFactory.CreateFrom(dbFigure);
             return figure.GetSquare();
         }
-
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<Figure>>> GetFigures()
-        //{
-
-        //}
     }
 }

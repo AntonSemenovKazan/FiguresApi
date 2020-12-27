@@ -16,11 +16,7 @@ namespace FiguresApi.Tests.Helpers
             var x = GenerateNumber();
             var y = GenerateNumber();
 
-            return new Contracts.Coordinates()
-            {
-                X = x,
-                Y = y
-            };
+            return new Contracts.Coordinates(x, y);
         }
 
         public static Contracts.Coordinates[] GenerateCoordinates(int number)

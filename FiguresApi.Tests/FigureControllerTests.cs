@@ -4,6 +4,7 @@ using FiguresApi.Domain;
 using FiguresApi.Tests.Helpers;
 using Moq;
 using NUnit.Framework;
+using System;
 
 namespace FiguresApi.Tests
 {
@@ -34,13 +35,36 @@ namespace FiguresApi.Tests
 
             var controller = new FigureController(mapper, dbContext, figureFactory);
 
-            var figure = Generator.GenerateFigure(figureType);
+            var (figure, expectedSquare) = GetFigure(figureType);
             var figureId = controller.PostFigure(figure).Result;
 
             Assert.IsTrue(figureId.Value > 0);
 
             var square = controller.GetFigure(figureId.Value).Result;
-            Assert.IsTrue(square.Value >= 0);
+            Assert.AreEqual(expectedSquare, square.Value);
+        }
+
+        private (Contracts.Figure figure, double expectedSquare) GetFigure(string figureType)
+        {
+            switch (figureType)
+            {
+                case FigureType.Circle:
+                    var circle = new Contracts.Figure()
+                    {
+                        Type = FigureType.Circle,
+                        Coordinates = new[] { new Contracts.Coordinates(10, 10), new Contracts.Coordinates(5, 10) }
+                    };
+                    return (circle, 39.269908169872416);
+                case FigureType.Triangle:
+                    var triangle = new Contracts.Figure()
+                    {
+                        Type = FigureType.Triangle,
+                        Coordinates = new[] { new Contracts.Coordinates(0, 0), new Contracts.Coordinates(5, 0), new Contracts.Coordinates(0, 5) }
+                    };
+                    return (triangle, 12.5);
+                default:
+                    throw new ArgumentOutOfRangeException(figureType);
+            }
         }
 
         private FiguresDbContext CreateDbContext()
@@ -56,8 +80,5 @@ namespace FiguresApi.Tests
 
             return mock.Object;
         }
-
-        
-
     }
 }

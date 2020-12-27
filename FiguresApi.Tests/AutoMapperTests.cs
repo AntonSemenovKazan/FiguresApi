@@ -1,5 +1,3 @@
-using AutoMapper;
-using FiguresApi.Converters;
 using FiguresApi.Tests.Helpers;
 using NUnit.Framework;
 
