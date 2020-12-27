@@ -1,14 +1,7 @@
 ﻿using System;
 
-namespace FiguresApi.Services
+namespace FiguresApi.Domain
 {
-    public static class FigureType
-    {
-        public const string Circle = "circle";
-
-        public const string Triangle = "triangle";
-    }
-
     public static class FigureHelper
     {
         public static double GetDistance(Coordinates a, Coordinates b)

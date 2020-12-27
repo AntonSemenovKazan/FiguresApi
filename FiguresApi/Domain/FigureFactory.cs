@@ -3,7 +3,7 @@ using System.Linq;
 using AutoMapper;
 using FiguresApi.Db;
 
-namespace FiguresApi.Services
+namespace FiguresApi.Domain
 {
     public class FigureFactory
     {

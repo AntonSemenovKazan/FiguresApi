@@ -1,11 +1,10 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using FiguresApi.Db;
-using FiguresApi.Services;
 using FiguresApi.Validators;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
+using FiguresApi.Domain;
 using Figure = FiguresApi.Contracts.Figure;
 
 namespace FiguresApi.Controllers
@@ -44,7 +43,9 @@ namespace FiguresApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<double>> GetFigure(int id)
         {
-            var dbFigure = await dbContext.Figures.Include(f => f.Coordinates).SingleOrDefaultAsync(f => f.FigureId == id);
+            var dbFigure = await dbContext.Figures.
+                Include(f => f.Coordinates).
+                SingleOrDefaultAsync(f => f.FigureId == id);
 
             if (dbFigure == null)
             {

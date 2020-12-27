@@ -1,4 +1,4 @@
-﻿namespace FiguresApi.Services
+﻿namespace FiguresApi.Domain
 {
     public class Coordinates
     {

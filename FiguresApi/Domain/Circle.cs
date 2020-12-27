@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FiguresApi.Services
+namespace FiguresApi.Domain
 {
     public class Circle : IFigure
     {

@@ -10,7 +10,7 @@ namespace FiguresApi.Converters
             CreateMap<Coordinates, Contracts.Coordinates>();
             CreateMap<Figure, Contracts.Figure>();
 
-            CreateMap<Coordinates, Services.Coordinates>();
+            CreateMap<Coordinates, Domain.Coordinates>();
 
             CreateMap<Contracts.Coordinates, Coordinates>()
                 .ForMember(x => x.FigureId, opt => opt.Ignore())

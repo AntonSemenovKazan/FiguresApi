@@ -4,3 +4,7 @@
 /FiguresApi/figures.db
 /FiguresApi/figures.db-shm
 /FiguresApi/figures.db-wal
+/FiguresApi.Tests/bin/
+/FiguresApi.Tests/obj/
+/FiguresApi/.vs/
+/FiguresApi.Tests/FiguresApi.Tests.csproj.user

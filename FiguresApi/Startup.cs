@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using FiguresApi.Converters;
 using FiguresApi.Db;
-using FiguresApi.Services;
+using FiguresApi.Domain;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -33,6 +33,8 @@ namespace FiguresApi
 
             services.AddControllers();
 
+            services.AddSingleton<IDbSettings, DbSettings>();
+
             services.AddDbContext<FiguresDbContext>();
 
             services.AddSingleton<FigureFactory>();
@@ -41,12 +43,11 @@ namespace FiguresApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, FiguresDbContext dbContext)
         {
+            dbContext.Database.EnsureCreated();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-
-                //dbContext.Database.EnsureDeleted();
-                dbContext.Database.EnsureCreated();
             }
 
             app.UseHttpsRedirection();
